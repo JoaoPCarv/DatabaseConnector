@@ -2,6 +2,8 @@ package com.joaoplima99.mocking.model;
 
 import com.google.common.base.MoreObjects;
 
+import java.util.Arrays;
+
 public enum Region {
 
     BRAZIL("Brazil", 1, StatusOfRegion.ACTIVATED),
@@ -16,6 +18,11 @@ public enum Region {
         this.name = name;
         this.numOfClusters = numOfClusters;
         this.status = status;
+    }
+
+    public static Region of(String regionName) {
+        return Arrays.stream(Region.values()).filter(region -> region.getName().equals(regionName))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Region '" + regionName + "' is not mapped."));
     }
 
     public String getName() {

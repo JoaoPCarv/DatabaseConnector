@@ -1,0 +1,15 @@
+
+k
+java:S1104"OMake LOG a static final constant or non-public and provide accessors if needed.(Ú“…8¨¶«π¡1
+E
+java:S1444")Make this "public static LOG" field final(Ú“…8≠¶«π¡1
+j
+java:S3008"NRename this field "LOG" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ú“…8∏¶«π¡1
+û
+java:S1186"ÄAdd a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(∂†ôí8Öœ«π¡1
+e
+java:S6355"HAdd 'since' and/or 'forRemoval' arguments to the @Deprecated annotation.(ıà˙ö8º¶«π¡1
+R
+java:S1133"5Do not forget to remove this deprecated code someday.(ûÀè§8º¶«π¡1
+E
+java:S1123"(Add the missing @deprecated Javadoc tag.(ûÀè§8º¶«π¡1

@@ -21,20 +21,28 @@ public class RepositoryServiceTest {
 
     private final String PERSISTENCE_UNIT_NAME = "DatabaseConnector";
 
+    private MockedStatic<Persistence> persistence;
+
     @Test
     public void assert_NPE_on_startEntityManager_for_fail_on_createEntityManagerFactory() {
         MockedStatic<Persistence> persistence = mockStatic(Persistence.class);
-        persistence.when(() -> Persistence.createEntityManagerFactory(anyString())).thenReturn(nullable(EntityManagerFactory.class));
-        assertThrows(NullPointerException.class, () -> startEntityManager("persistenceUnitName"));
+        persistence.when(() -> Persistence.createEntityManagerFactory(anyString(), any(Map.class)))
+                .thenReturn(nullable(EntityManagerFactory.class));
+       assertThrows(NullPointerException.class, () -> startEntityManager(eq("persistenceUnitName")));
+       persistence.clearInvocations();
+       persistence.close();
     }
 
     @Test
     public void assert_null_on_startEntityManager_for_fail_on_createEntityManager() {
         MockedStatic<Persistence> persistence = mockStatic(Persistence.class);
-        persistence.when(() -> Persistence.createEntityManagerFactory(anyString())).thenReturn(mock(EntityManagerFactory.class));
-        persistence.when(() -> Persistence.createEntityManagerFactory(anyString()).createEntityManager(any(Map.class)))
-                .thenReturn(nullable(EntityManagerFactory.class));
+        EntityManagerFactory emf = mock(EntityManagerFactory.class);
+        when(emf.createEntityManager()).thenReturn(null);
+        persistence.when(() -> Persistence.createEntityManagerFactory(anyString(), any(Map.class)))
+                .thenReturn(emf);
         assertNull(startEntityManager("persistenceUnitName"));
+        persistence.clearInvocations();
+        persistence.close();
     }
 
     @Test

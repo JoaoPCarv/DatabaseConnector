@@ -1,24 +1,34 @@
 package com.joaoplima99.mocking.model;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.hash.HashCode;
+import com.joaoplima99.mocking.converter.RegionConverter;
+import com.joaoplima99.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.joaoplima99.utils.StringUtils.getAppendedCharString;
-import static com.joaoplima99.utils.StreamUtils.requireNonNullElements;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.joaoplima99.utils.StreamUtils.requireNonNullElements;
+import static com.joaoplima99.utils.StringUtils.getAppendedCharString;
 
+@Entity
+@Table(name = "MockingBean")
 public class MockingBean {
 
     public static Logger LOG = LoggerFactory.getLogger(MockingBean.class);
 
+    @Column(name = "name_mockbean")
     private String name;
+    @Convert(converter = RegionConverter.class)
+    @Column(name = "name_region")
     private Region region;
+    @Id
+    @GeneratedValue()
     private int id;
 
     public String getName() {
@@ -80,48 +90,48 @@ public class MockingBean {
 
     @Override
     public int hashCode() {
-        return HashCode.fromBytes(this.getName().getBytes()).hashCode()
-                + HashCode.fromBytes(this.getRegion().getName().getBytes()).hashCode()
-                + HashCode.fromBytes(Integer.toString(this.getId()).getBytes()).hashCode();
+        return ObjectUtils.getHashCode(this.getName(), this.region.getName(), Integer.toString(this.getId()));
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof MockingBean)) return false;
+        if (this == o) return true;
+        //Parameter o is certainly an instance of MockingBean
         MockingBean that = (MockingBean) o;
         return this.hashCode() == that.hashCode()
-                && this.getName().equals(that.getName())
-                && this.getRegion().equals(that.getRegion())
+                && Objects.equals(this.getName(), that.getName())
+                && Objects.equals(this.getRegion(), that.getRegion())
                 && this.getId() == that.getId();
     }
 
-    public static MockingBean newBean() {
+    public static MockingBean newMockingBean() {
         return new MockingBean();
     }
 
-    public final class Utils {
+    public static final class Utils {
 
         //This internal class should not be instantiated.
         @Deprecated(since = "1.0")
         private Utils() {}
 
         public static List<MockingBean> getMockingBeanBatch(String name1, Region region1, int id1) {
-            return newArrayList(newBean().withName(name1).withRegion(region1).withId(id1));
+            return newArrayList(newMockingBean().withName(name1).withRegion(region1).withId(id1));
         }
         public static List<MockingBean> getMockingBeanBatch(String name1, Region region1, int id1,
                                                             String name2, Region region2, int id2) {
             return newArrayList(
-                    newBean().withName(name1).withRegion(region1).withId(id1),
-                    newBean().withName(name2).withRegion(region2).withId(id2)
+                    newMockingBean().withName(name1).withRegion(region1).withId(id1),
+                    newMockingBean().withName(name2).withRegion(region2).withId(id2)
             );
         }
         public static List<MockingBean> getMockingBeanBatch(String name1, Region region1, int id1,
                                                             String name2, Region region2, int id2,
                                                             String name3, Region region3, int id3) {
             return newArrayList(
-                    newBean().withName(name1).withRegion(region1).withId(id1),
-                    newBean().withName(name2).withRegion(region2).withId(id2),
-                    newBean().withName(name3).withRegion(region3).withId(id3)
+                    newMockingBean().withName(name1).withRegion(region1).withId(id1),
+                    newMockingBean().withName(name2).withRegion(region2).withId(id2),
+                    newMockingBean().withName(name3).withRegion(region3).withId(id3)
             );
         }
         public static List<MockingBean> getMockingBeanBatch(String name1, Region region1, int id1,
@@ -129,10 +139,10 @@ public class MockingBean {
                                                             String name3, Region region3, int id3,
                                                             String name4, Region region4, int id4) {
             return newArrayList(
-                    newBean().withName(name1).withRegion(region1).withId(id1),
-                    newBean().withName(name2).withRegion(region2).withId(id2),
-                    newBean().withName(name3).withRegion(region3).withId(id3),
-                    newBean().withName(name4).withRegion(region4).withId(id4)
+                    newMockingBean().withName(name1).withRegion(region1).withId(id1),
+                    newMockingBean().withName(name2).withRegion(region2).withId(id2),
+                    newMockingBean().withName(name3).withRegion(region3).withId(id3),
+                    newMockingBean().withName(name4).withRegion(region4).withId(id4)
             );
         }
 
@@ -142,7 +152,7 @@ public class MockingBean {
                         "because the lengths of the arrays of parameters don't match.");
             }
             List<MockingBean> mockingBeans = new ArrayList<>(names.length);
-            for(int i = 0; i < names.length; i++) mockingBeans.add(newBean().withName(names[i]).withRegion(regions[i]).withId(ids[i]));
+            for(int i = 0; i < names.length; i++) mockingBeans.add(newMockingBean().withName(names[i]).withRegion(regions[i]).withId(ids[i]));
             return mockingBeans;
         }
 
@@ -189,14 +199,14 @@ public class MockingBean {
                             "io", Region.USA, 11);
                 case 3 :
                     return newArrayList(
-                            newBean().withName("Joao").withRegion(Region.BRAZIL).withId(00),
-                            newBean().withName("Pedro").withRegion(Region.USA).withId(01),
-                            newBean().withName("Lima").withRegion(Region.CHINA).withId(10),
-                            newBean().withName("AC").withRegion(Region.CHINA).withId(11),
-                            newBean().withName("Clean").withRegion(Region.BRAZIL).withId(00),
-                            newBean().withName("Cloud").withRegion(Region.BRAZIL).withId(01),
-                            newBean().withName("SEK").withRegion(Region.CHINA).withId(10),
-                            newBean().withName("io").withRegion(Region.USA).withId(11)
+                            newMockingBean().withName("Joao").withRegion(Region.BRAZIL).withId(00),
+                            newMockingBean().withName("Pedro").withRegion(Region.USA).withId(01),
+                            newMockingBean().withName("Lima").withRegion(Region.CHINA).withId(10),
+                            newMockingBean().withName("AC").withRegion(Region.CHINA).withId(11),
+                            newMockingBean().withName("Clean").withRegion(Region.BRAZIL).withId(00),
+                            newMockingBean().withName("Cloud").withRegion(Region.BRAZIL).withId(01),
+                            newMockingBean().withName("SEK").withRegion(Region.CHINA).withId(10),
+                            newMockingBean().withName("io").withRegion(Region.USA).withId(11)
                     );
                 default: return null;
             }

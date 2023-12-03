@@ -1,15 +1,28 @@
 package com.joaoplima99.utils;
 
+import com.google.common.collect.Lists;
+
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public final class StreamUtils<T> {
+public final class StreamUtils {
 
     //This class should not be instantiated.
     @Deprecated(since = "1.0")
     private StreamUtils() {}
+
+    public static <T> T[] getTypeArrayFromStream(Stream<T> stream) {
+        return (T[]) stream.toArray();
+    }
+
+    public static <T> Stream<T> copyStream(Stream<T> source) {
+        List<T> list = new LinkedList<>();
+        source.forEach(list::add);
+        return list.stream();
+    }
 
     public static void requireNonNullElements(List<?> list) {
         Objects.requireNonNull(list);

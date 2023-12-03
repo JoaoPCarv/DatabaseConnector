@@ -15,4 +15,8 @@ public final class StringUtils {
         }
         return sBuilder.toString();
     }
+
+    public static void emptyStringBuilder(StringBuilder sBuilder) {
+        sBuilder.delete(0, sBuilder.length());
+    }
 }
