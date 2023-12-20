@@ -1,5 +1,6 @@
 package com.joaoplima99.service;
 
+import com.joaoplima99.manager.ResourceManager;
 import com.joaoplima99.utils.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,31 +11,33 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public final class FileService {
 
-    //This class should not be instantiated.
+    /**
+     * @deprecated (This class should not be instantiated)
+     */
     @Deprecated(since = "1.0")
     private FileService() {
     }
 
-    public static Logger LOG = LoggerFactory.getLogger(FileService.class);
+    public static final Logger LOG = LoggerFactory.getLogger(FileService.class);
 
-    public static Stream<String> getFileTextStreamFromResourcePath(String path) {
-        Stream<String> textStream = null;
+    public static Optional<Stream<String>> getFileTextStreamFromResourcePath(String path) {
+        Stream<String> textStream;
         try (BufferedReader bf = new BufferedReader(new FileReader(new File(
-                Objects.requireNonNull(FileService.class.getResource(path).toURI()))))) {
+                Objects.requireNonNull(ResourceManager.getInstance().getResource(path).toURI()))))) {
             textStream = StreamUtils.copyStream(bf.lines());
             if(textStream == null) {
                 LOG.error("The text stream loaded from the specified resource path [{}]  is null.", path);
-                return null;
+                return Optional.empty();
             }
-            return textStream;
+            return Optional.of(textStream);
         } catch (URISyntaxException | IOException e) {
             LOG.error("Error while loading file from the specified resource path. Exception thrown: {}.", e.getMessage());
-            return null;
+            return Optional.empty();
         }
     }
 }

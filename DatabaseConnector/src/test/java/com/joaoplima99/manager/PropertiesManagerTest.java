@@ -5,19 +5,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Paths;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PropertiesManagerTest {
@@ -25,35 +22,37 @@ public class PropertiesManagerTest {
     @Spy
     PropertiesManager propertiesManager;
 
-    private static Map<String, String> TESTING_PROPERTIES = Map.of(
+    private static final Map<String, String> TESTING_PROPERTIES = Map.of(
             "testing.property.one",   "property-one",
             "testing.property.two",   "property-two",
             "testing.property.three", "property-three"
     );
 
     @Test
-    public void validateInvalidResourcePath() throws URISyntaxException, IOException {
-        assertNull(propertiesManager.loadPropertiesFromResourcePath("/invalid-resource-path.dot"));
+    public void assert_invalid_resource_path_on_loadPropertiesFromResourcePath() throws URISyntaxException, IOException {
+        assertFalse(propertiesManager.loadPropertiesFromResourcePath("/invalid-resource-path.dot").isPresent());
     }
 
     @Test
-    public void validateValidResourcePath() throws URISyntaxException, IOException {
-        Properties properties = propertiesManager.loadPropertiesFromResourcePath("/testing.properties");
+    public void assert_valid_resource_path_on_loadPropertiesFromResourcePath() throws URISyntaxException, IOException {
+        Optional<Properties> opProp = propertiesManager.loadPropertiesFromResourcePath("/testing/testing-supporting-files/testing.properties");
+        assertTrue(opProp.isPresent());
+        Properties properties = opProp.get();
         verify(propertiesManager, times(1))
-                .loadProperties(getClass().getResource("/testing.properties").toURI());
-        properties.keySet().forEach(key -> assertTrue(TESTING_PROPERTIES.keySet().contains(key)));
+                .loadProperties(ResourceManager.getInstance().getResource("/testing/testing-supporting-files/testing.properties").toURI());
+        properties.keySet().forEach(key -> assertTrue(TESTING_PROPERTIES.containsKey(key)));
         properties.entrySet().forEach(entry -> assertTrue(TESTING_PROPERTIES.entrySet().contains(entry)));
     }
 
     @Test
-    public void validateThrowsPropertyNotFoundException() {
+    public void assert_throws_PropertyNotFoundException_on_getProperty() {
         assertThrows(PropertyNotFoundException.class, () -> {
             propertiesManager.getProperty(getActualTestingProperties(), "testing.property.N/A");
         });
     }
 
     @Test
-    public void validateGetAllTestingProperties() {
+    public void assert_getting_all_testing_properties_on_getProperty() {
         Properties properties = getActualTestingProperties();
         properties.keySet().forEach(key -> {
             try {
@@ -67,7 +66,7 @@ public class PropertiesManagerTest {
 
     private Properties getActualTestingProperties() {
         Properties properties = new Properties();
-        TESTING_PROPERTIES.forEach((key, value) -> properties.setProperty(key, value));
+        TESTING_PROPERTIES.forEach(properties::setProperty);
         return properties;
     }
 }

@@ -1,7 +1,7 @@
 package com.joaoplima99.mocking.model;
 
 import com.google.common.base.MoreObjects;
-import com.joaoplima99.mocking.converter.RegionConverter;
+import com.joaoplima99.mocking.persistence.converter.converter.RegionConverter;
 import com.joaoplima99.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -210,6 +211,12 @@ public class MockingBean {
                     );
                 default: return null;
             }
+        }
+
+        public static MockingBean getRandomMockingBean() {
+            List<MockingBean> list = getMockingBeanList();
+            int drawn = ThreadLocalRandom.current().nextInt(0, list.size() - 1);
+            return list.get(drawn);
         }
 
         public static void printRegionalBeans(List<MockingBean> mockingBeans) {

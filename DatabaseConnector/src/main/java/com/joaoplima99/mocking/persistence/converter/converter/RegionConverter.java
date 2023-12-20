@@ -1,4 +1,4 @@
-package com.joaoplima99.mocking.converter;
+package com.joaoplima99.mocking.persistence.converter.converter;
 
 import com.joaoplima99.mocking.model.Region;
 import org.slf4j.Logger;
@@ -20,16 +20,13 @@ public class RegionConverter implements AttributeConverter<Region, String> {
             LOG.error("The region passed to the method RegionConverter.convertToDatabaseColumn is null.");
             return null;
         }
-        StringBuilder sBuilder = new StringBuilder();
-        sBuilder.append(TAG);
-        sBuilder.append(region.getName());
-        return sBuilder.toString();
+        return TAG + region.getName();
     }
 
     @Override
     public Region convertToEntityAttribute(String s) {
         if (s == null || s.isEmpty()) {
-            String msg = s == null ? "null" : "empty";
+            String msg = (s == null) ? "null" : "empty";
             LOG.error("The string passed to the method RegionConverter.convertToEntityAttribute is {}.", msg);
             return null;
         }

@@ -2,17 +2,18 @@ package com.joaoplima99.mocking.model;
 
 import com.google.common.base.MoreObjects;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public enum Region {
+public enum Region implements Serializable {
 
     BRAZIL("Brazil", 1, StatusOfRegion.ACTIVATED),
     USA("USA", 5, StatusOfRegion.ON_HOLD),
     CHINA("China", 4, StatusOfRegion.ACTIVATED);
 
-    private String name;
-    private int numOfClusters;
-    private StatusOfRegion status;
+    private final String name;
+    private final int numOfClusters;
+    private final StatusOfRegion status;
 
     Region(String name, int numOfClusters, StatusOfRegion status){
         this.name = name;
@@ -46,7 +47,7 @@ public enum Region {
                 .toString();
     }
 
-    private enum StatusOfRegion {
+    public enum StatusOfRegion {
 
         ACTIVATED("Activated"),
         DEACTIVATED("Deactivated"),
@@ -54,7 +55,7 @@ public enum Region {
         DEPRECATED("Deprecated"),
         TO_BE_BUILT("To be built");
 
-        private String statusStr;
+        private final String statusStr;
         StatusOfRegion(String status) {
             this.statusStr = status;
         }

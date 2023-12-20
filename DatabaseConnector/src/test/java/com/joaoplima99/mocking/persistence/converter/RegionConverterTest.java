@@ -1,6 +1,7 @@
-package com.joaoplima99.mocking.converter;
+package com.joaoplima99.mocking.persistence.converter;
 
 import com.joaoplima99.mocking.model.Region;
+import com.joaoplima99.mocking.persistence.converter.converter.RegionConverter;
 import com.joaoplima99.utils.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,17 +12,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.joaoplima99.mocking.converter.RegionConverter.TAG;
+import static com.joaoplima99.mocking.persistence.converter.converter.RegionConverter.TAG;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 
 public class RegionConverterTest {
 
-    private static Logger LOG = LoggerFactory.getLogger(RegionConverter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RegionConverter.class);
 
     private RegionConverter regionConverter;
-    private static Map<String, String> tags;
+    private static final Map<String, String> tags;
 
     static {
         StringBuilder sBuilder = new StringBuilder();

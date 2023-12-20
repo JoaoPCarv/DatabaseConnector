@@ -12,6 +12,25 @@
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- DEPENDENCY AND PLUGIN PROPERTIES -->
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <junit-jupiter-api.version>5.9.3</junit-jupiter-api.version>
+        <junit-jupiter-engine.version>5.9.3</junit-jupiter-engine.version>
+        <javax.persistence-api.version>2.2</javax.persistence-api.version>
+        <hibernate-jpa-2.1-api.version>1.0.2.Final</hibernate-jpa-2.1-api.version>
+        <mssql-jdbc.version>12.2.0.jre11</mssql-jdbc.version>
+        <hibernate-core.version>6.2.3.Final</hibernate-core.version>
+        <hibernate-entitymanager.version>5.6.15.Final</hibernate-entitymanager.version>
+        <mockito-core.version>5.3.1</mockito-core.version>
+        <guava.version>32.1.2-jre</guava.version>
+        <junit.version>RELEASE</junit.version>
+        <auto-service.version>1.1.1</auto-service.version>
+        <slf4j-api.version>2.0.9</slf4j-api.version>
+        <slf4j-jdk14.version>2.0.5</slf4j-jdk14.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <jackson-databind.version>2.16.0</jackson-databind.version>
+
     </properties>
 
     <dependencies>
@@ -20,14 +39,14 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.3</version>
+            <version>${junit-jupiter-api.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.3</version>
+            <version>${junit-jupiter-engine.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -35,27 +54,27 @@
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
-            <version>2.2</version>
+            <version>${javax.persistence-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <version>1.0.2.Final</version>
+            <version>${hibernate-jpa-2.1-api.version}</version>
         </dependency>
 
         <!-- SQL SERVER -->
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>12.2.0.jre11</version>
+            <version>${mssql-jdbc.version}</version>
         </dependency>
 
         <!-- HIBERNATE-CORE -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.2.3.Final</version>
+            <version>${hibernate-core.version}</version>
             <type>pom</type>
         </dependency>
 
@@ -63,14 +82,14 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.6.15.Final</version>
+            <version>${hibernate-entitymanager.version}</version>
         </dependency>
 
         <!-- MOCKITO -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.3.1</version>
+            <version>${mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -78,12 +97,12 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>32.1.2-jre</version>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>RELEASE</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -92,20 +111,20 @@
         <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
-            <version>1.1.1</version>
+            <version>${auto-service.version}</version>
         </dependency>
 
         <!-- SLF4J - LOGGER -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.9</version>
+            <version>${slf4j-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
-            <version>2.0.5</version>
+            <version>${slf4j-jdk14.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -113,16 +132,33 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
+            <version>${commons-lang3.version}</version>
         </dependency>
 
         <!-- JACKSON - FASTERXML -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.16.0</version>
+            <version>${jackson-databind.version}</version>
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>19</source>
+                    <target>19</target>
+                    <proc>none</proc>
+                    <annotationProcessors>
+                    </annotationProcessors>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

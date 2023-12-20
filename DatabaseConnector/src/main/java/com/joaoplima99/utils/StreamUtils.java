@@ -1,9 +1,9 @@
 package com.joaoplima99.utils;
 
-import com.google.common.collect.Lists;
-
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -41,7 +41,6 @@ public final class StreamUtils {
 
         return rList;
     }
-
     public static void main(String[] args) {
     }
 }

@@ -2,6 +2,7 @@ package com.joaoplima99.utils;
 
 import com.google.common.hash.HashCode;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,7 +13,7 @@ public final class ObjectUtils {
     @Deprecated(since = "1.0")
     private ObjectUtils() {}
 
-    public static void flushObject(Object o) {
+    public static void nullifyObject(Object o) {
         if (o != null) o = null;
     }
 
